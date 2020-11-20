@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d80619e409694d2aaf38ba3f1cd5b512" Name="Diagram1">
+        <EntityTypeShape EntityType="SalonDbModel.tblbarber" Width="1.5" PointX="3.75" PointY="8.625" />
+        <EntityTypeShape EntityType="SalonDbModel.tblcurrent_appointments" Width="1.5" PointX="13.25" PointY="8.75" />
+        <EntityTypeShape EntityType="SalonDbModel.tbllog" Width="1.5" PointX="0.75" PointY="0.75" />
+        <AssociationConnector Association="SalonDbModel.tblCurrentAppointments_tblBarber" />
+        <EntityTypeShape EntityType="SalonDbModel.tblcustomer" Width="1.5" PointX="5" PointY="16.5" />
+        <EntityTypeShape EntityType="SalonDbModel.tblservice" Width="1.5" PointX="5" PointY="12.75" />
+        <EntityTypeShape EntityType="SalonDbModel.tblsalon" Width="1.5" PointX="2.75" PointY="12.375" />
+        <AssociationConnector Association="SalonDbModel.tblBarber_tblSalon" />
+        <AssociationConnector Association="SalonDbModel.tblCurrentAppointments_tblSalon" />
+        <AssociationConnector Association="SalonDbModel.tblCustomer_tblSalon" />
+        <AssociationConnector Association="SalonDbModel.tblService_tblShop" />
+        <EntityTypeShape EntityType="SalonDbModel.tblservice_booked" Width="1.5" PointX="9.5" PointY="12.75" />
+        <AssociationConnector Association="SalonDbModel.tblServiceBooked_tblService" />
+        <EntityTypeShape EntityType="SalonDbModel.tblbarber_service" Width="1.5" PointX="7.25" PointY="9" />
+        <AssociationConnector Association="SalonDbModel.tblBaberRole_tblBarber" />
+        <AssociationConnector Association="SalonDbModel.tblBaberRole_tblService" />
+        <EntityTypeShape EntityType="SalonDbModel.tblappointment" Width="1.5" PointX="7.25" PointY="12.625" />
+        <AssociationConnector Association="SalonDbModel.tblCurrentAppointments_tblAppointment" />
+        <AssociationConnector Association="SalonDbModel.tblJob_tblBarber" />
+        <AssociationConnector Association="SalonDbModel.tblJob_tblCustomer" />
+        <AssociationConnector Association="SalonDbModel.tblJob_tblSalon" />
+        <AssociationConnector Association="SalonDbModel.tblServiceBooked_tblAppointment" />
+        <EntityTypeShape EntityType="SalonDbModel.tblinvoice" Width="1.5" PointX="9.5" PointY="16.375" />
+        <AssociationConnector Association="SalonDbModel.tblInvoice_tblAppointment" />
+        <AssociationConnector Association="SalonDbModel.tblInvoice_tblSalon" />
+        <EntityTypeShape EntityType="SalonDbModel.tblshop_owner" Width="1.5" PointX="0.75" PointY="13.25" />
+        <AssociationConnector Association="SalonDbModel.tblSalon_tblShopOwner" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

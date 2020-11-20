@@ -1,0 +1,979 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SalonDbModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblappointment">
+          <Key>
+            <PropertyRef Name="appointment_id" />
+          </Key>
+          <Property Name="appointment_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="appointment_no_for_day" Type="int" Nullable="false" />
+          <Property Name="salon_id" Type="int" Nullable="false" />
+          <Property Name="due_date" Type="date" Nullable="false" />
+          <Property Name="start_time" Type="time" Precision="0" Nullable="false" />
+          <Property Name="expected_end_time" Type="time" Precision="0" Nullable="false" />
+          <Property Name="end_time" Type="time" Precision="0" />
+          <Property Name="barber_Id" Type="int" Nullable="false" />
+          <Property Name="customer_id" Type="int" Nullable="false" />
+          <Property Name="canceled" Type="bool" Nullable="false" />
+          <Property Name="status" Type="varchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblbarber">
+          <Key>
+            <PropertyRef Name="barber_id" />
+          </Key>
+          <Property Name="barber_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="barber_name" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="salon_id" Type="int" Nullable="false" />
+          <Property Name="allocated_seat_no" Type="int" Nullable="false" />
+          <Property Name="is_available" Type="bool" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblbarber_service">
+          <Key>
+            <PropertyRef Name="barber_service_id" />
+          </Key>
+          <Property Name="barber_service_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="barber_id" Type="int" Nullable="false" />
+          <Property Name="service_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblcurrent_appointments">
+          <Key>
+            <PropertyRef Name="current_appointment_id" />
+          </Key>
+          <Property Name="current_appointment_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="appointment_id" Type="int" Nullable="false" />
+          <Property Name="salon_id" Type="int" Nullable="false" />
+          <Property Name="barber_id" Type="int" Nullable="false" />
+          <Property Name="current_date" Type="date" Nullable="false" />
+          <Property Name="last_appointment_no" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblcustomer">
+          <Key>
+            <PropertyRef Name="customer_id" />
+          </Key>
+          <Property Name="customer_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="mobile_no" Type="int" Nullable="false" />
+          <Property Name="salon_id" Type="int" Nullable="false" />
+          <Property Name="login_time" Type="datetime" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblinvoice">
+          <Key>
+            <PropertyRef Name="invoice_id" />
+          </Key>
+          <Property Name="invoice_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="salon_id" Type="int" Nullable="false" />
+          <Property Name="appointment_id" Type="int" Nullable="false" />
+          <Property Name="total_price" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="discount" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="final_price" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbllog">
+          <Key>
+            <PropertyRef Name="log_id" />
+          </Key>
+          <Property Name="log_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ref_table" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="ref_id" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="updated_date_time" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="action_type" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblsalon">
+          <Key>
+            <PropertyRef Name="salon_id" />
+          </Key>
+          <Property Name="salon_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="owner_id" Type="int" Nullable="false" />
+          <Property Name="salon_name" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="salon_location" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="contact_no" Type="int" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="45" />
+          <Property Name="seating_capacity" Type="int" Nullable="false" />
+          <Property Name="opening_time" Type="time" Precision="0" Nullable="false" />
+          <Property Name="closing_time" Type="time" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblservice">
+          <Key>
+            <PropertyRef Name="service_id" />
+          </Key>
+          <Property Name="service_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="service_name" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="salon_id" Type="int" Nullable="false" />
+          <Property Name="price" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="duration" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblservice_booked">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="appointment_id" Type="int" Nullable="false" />
+          <Property Name="service_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblshop_owner">
+          <Key>
+            <PropertyRef Name="owner_id" />
+          </Key>
+          <Property Name="owner_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="contact_no" Type="int" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="40" />
+          <Property Name="password" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="pin" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="tblBaberRole_tblBarber">
+          <End Role="tblbarber" Type="Self.tblbarber" Multiplicity="1" />
+          <End Role="tblbarber_service" Type="Self.tblbarber_service" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblbarber">
+              <PropertyRef Name="barber_id" />
+            </Principal>
+            <Dependent Role="tblbarber_service">
+              <PropertyRef Name="barber_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblBaberRole_tblService">
+          <End Role="tblservice" Type="Self.tblservice" Multiplicity="1" />
+          <End Role="tblbarber_service" Type="Self.tblbarber_service" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblservice">
+              <PropertyRef Name="service_id" />
+            </Principal>
+            <Dependent Role="tblbarber_service">
+              <PropertyRef Name="service_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblBarber_tblSalon">
+          <End Role="tblsalon" Type="Self.tblsalon" Multiplicity="1" />
+          <End Role="tblbarber" Type="Self.tblbarber" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblsalon">
+              <PropertyRef Name="salon_id" />
+            </Principal>
+            <Dependent Role="tblbarber">
+              <PropertyRef Name="salon_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblCurrentAppointments_tblAppointment">
+          <End Role="tblappointment" Type="Self.tblappointment" Multiplicity="1" />
+          <End Role="tblcurrent_appointments" Type="Self.tblcurrent_appointments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblappointment">
+              <PropertyRef Name="appointment_id" />
+            </Principal>
+            <Dependent Role="tblcurrent_appointments">
+              <PropertyRef Name="appointment_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblCurrentAppointments_tblBarber">
+          <End Role="tblbarber" Type="Self.tblbarber" Multiplicity="1" />
+          <End Role="tblcurrent_appointments" Type="Self.tblcurrent_appointments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblbarber">
+              <PropertyRef Name="barber_id" />
+            </Principal>
+            <Dependent Role="tblcurrent_appointments">
+              <PropertyRef Name="barber_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblCurrentAppointments_tblSalon">
+          <End Role="tblsalon" Type="Self.tblsalon" Multiplicity="1" />
+          <End Role="tblcurrent_appointments" Type="Self.tblcurrent_appointments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblsalon">
+              <PropertyRef Name="salon_id" />
+            </Principal>
+            <Dependent Role="tblcurrent_appointments">
+              <PropertyRef Name="salon_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblCustomer_tblSalon">
+          <End Role="tblsalon" Type="Self.tblsalon" Multiplicity="1" />
+          <End Role="tblcustomer" Type="Self.tblcustomer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblsalon">
+              <PropertyRef Name="salon_id" />
+            </Principal>
+            <Dependent Role="tblcustomer">
+              <PropertyRef Name="salon_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblInvoice_tblAppointment">
+          <End Role="tblappointment" Type="Self.tblappointment" Multiplicity="1" />
+          <End Role="tblinvoice" Type="Self.tblinvoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblappointment">
+              <PropertyRef Name="appointment_id" />
+            </Principal>
+            <Dependent Role="tblinvoice">
+              <PropertyRef Name="appointment_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblInvoice_tblSalon">
+          <End Role="tblsalon" Type="Self.tblsalon" Multiplicity="1" />
+          <End Role="tblinvoice" Type="Self.tblinvoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblsalon">
+              <PropertyRef Name="salon_id" />
+            </Principal>
+            <Dependent Role="tblinvoice">
+              <PropertyRef Name="salon_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblJob_tblBarber">
+          <End Role="tblbarber" Type="Self.tblbarber" Multiplicity="1" />
+          <End Role="tblappointment" Type="Self.tblappointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblbarber">
+              <PropertyRef Name="barber_id" />
+            </Principal>
+            <Dependent Role="tblappointment">
+              <PropertyRef Name="barber_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblJob_tblCustomer">
+          <End Role="tblcustomer" Type="Self.tblcustomer" Multiplicity="1" />
+          <End Role="tblappointment" Type="Self.tblappointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblcustomer">
+              <PropertyRef Name="customer_id" />
+            </Principal>
+            <Dependent Role="tblappointment">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblJob_tblSalon">
+          <End Role="tblsalon" Type="Self.tblsalon" Multiplicity="1" />
+          <End Role="tblappointment" Type="Self.tblappointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblsalon">
+              <PropertyRef Name="salon_id" />
+            </Principal>
+            <Dependent Role="tblappointment">
+              <PropertyRef Name="salon_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblSalon_tblShopOwner">
+          <End Role="tblshop_owner" Type="Self.tblshop_owner" Multiplicity="1" />
+          <End Role="tblsalon" Type="Self.tblsalon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblshop_owner">
+              <PropertyRef Name="owner_id" />
+            </Principal>
+            <Dependent Role="tblsalon">
+              <PropertyRef Name="owner_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblService_tblShop">
+          <End Role="tblsalon" Type="Self.tblsalon" Multiplicity="1" />
+          <End Role="tblservice" Type="Self.tblservice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblsalon">
+              <PropertyRef Name="salon_id" />
+            </Principal>
+            <Dependent Role="tblservice">
+              <PropertyRef Name="salon_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblServiceBooked_tblAppointment">
+          <End Role="tblappointment" Type="Self.tblappointment" Multiplicity="1" />
+          <End Role="tblservice_booked" Type="Self.tblservice_booked" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblappointment">
+              <PropertyRef Name="appointment_id" />
+            </Principal>
+            <Dependent Role="tblservice_booked">
+              <PropertyRef Name="appointment_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblServiceBooked_tblService">
+          <End Role="tblservice" Type="Self.tblservice" Multiplicity="1" />
+          <End Role="tblservice_booked" Type="Self.tblservice_booked" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblservice">
+              <PropertyRef Name="service_id" />
+            </Principal>
+            <Dependent Role="tblservice_booked">
+              <PropertyRef Name="service_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SalonDbModelStoreContainer">
+          <EntitySet Name="tblappointment" EntityType="Self.tblappointment" Schema="barberdb" store:Type="Tables" />
+          <EntitySet Name="tblbarber" EntityType="Self.tblbarber" Schema="barberdb" store:Type="Tables" />
+          <EntitySet Name="tblbarber_service" EntityType="Self.tblbarber_service" Schema="barberdb" store:Type="Tables" />
+          <EntitySet Name="tblcurrent_appointments" EntityType="Self.tblcurrent_appointments" Schema="barberdb" store:Type="Tables" />
+          <EntitySet Name="tblcustomer" EntityType="Self.tblcustomer" Schema="barberdb" store:Type="Tables" />
+          <EntitySet Name="tblinvoice" EntityType="Self.tblinvoice" Schema="barberdb" store:Type="Tables" />
+          <EntitySet Name="tbllog" EntityType="Self.tbllog" Schema="barberdb" store:Type="Tables" />
+          <EntitySet Name="tblsalon" EntityType="Self.tblsalon" Schema="barberdb" store:Type="Tables" />
+          <EntitySet Name="tblservice" EntityType="Self.tblservice" Schema="barberdb" store:Type="Tables" />
+          <EntitySet Name="tblservice_booked" EntityType="Self.tblservice_booked" Schema="barberdb" store:Type="Tables" />
+          <EntitySet Name="tblshop_owner" EntityType="Self.tblshop_owner" Schema="barberdb" store:Type="Tables" />
+          <AssociationSet Name="tblBaberRole_tblBarber" Association="Self.tblBaberRole_tblBarber">
+            <End Role="tblbarber" EntitySet="tblbarber" />
+            <End Role="tblbarber_service" EntitySet="tblbarber_service" />
+          </AssociationSet>
+          <AssociationSet Name="tblBaberRole_tblService" Association="Self.tblBaberRole_tblService">
+            <End Role="tblservice" EntitySet="tblservice" />
+            <End Role="tblbarber_service" EntitySet="tblbarber_service" />
+          </AssociationSet>
+          <AssociationSet Name="tblBarber_tblSalon" Association="Self.tblBarber_tblSalon">
+            <End Role="tblsalon" EntitySet="tblsalon" />
+            <End Role="tblbarber" EntitySet="tblbarber" />
+          </AssociationSet>
+          <AssociationSet Name="tblCurrentAppointments_tblAppointment" Association="Self.tblCurrentAppointments_tblAppointment">
+            <End Role="tblappointment" EntitySet="tblappointment" />
+            <End Role="tblcurrent_appointments" EntitySet="tblcurrent_appointments" />
+          </AssociationSet>
+          <AssociationSet Name="tblCurrentAppointments_tblBarber" Association="Self.tblCurrentAppointments_tblBarber">
+            <End Role="tblbarber" EntitySet="tblbarber" />
+            <End Role="tblcurrent_appointments" EntitySet="tblcurrent_appointments" />
+          </AssociationSet>
+          <AssociationSet Name="tblCurrentAppointments_tblSalon" Association="Self.tblCurrentAppointments_tblSalon">
+            <End Role="tblsalon" EntitySet="tblsalon" />
+            <End Role="tblcurrent_appointments" EntitySet="tblcurrent_appointments" />
+          </AssociationSet>
+          <AssociationSet Name="tblCustomer_tblSalon" Association="Self.tblCustomer_tblSalon">
+            <End Role="tblsalon" EntitySet="tblsalon" />
+            <End Role="tblcustomer" EntitySet="tblcustomer" />
+          </AssociationSet>
+          <AssociationSet Name="tblInvoice_tblAppointment" Association="Self.tblInvoice_tblAppointment">
+            <End Role="tblappointment" EntitySet="tblappointment" />
+            <End Role="tblinvoice" EntitySet="tblinvoice" />
+          </AssociationSet>
+          <AssociationSet Name="tblInvoice_tblSalon" Association="Self.tblInvoice_tblSalon">
+            <End Role="tblsalon" EntitySet="tblsalon" />
+            <End Role="tblinvoice" EntitySet="tblinvoice" />
+          </AssociationSet>
+          <AssociationSet Name="tblJob_tblBarber" Association="Self.tblJob_tblBarber">
+            <End Role="tblbarber" EntitySet="tblbarber" />
+            <End Role="tblappointment" EntitySet="tblappointment" />
+          </AssociationSet>
+          <AssociationSet Name="tblJob_tblCustomer" Association="Self.tblJob_tblCustomer">
+            <End Role="tblcustomer" EntitySet="tblcustomer" />
+            <End Role="tblappointment" EntitySet="tblappointment" />
+          </AssociationSet>
+          <AssociationSet Name="tblJob_tblSalon" Association="Self.tblJob_tblSalon">
+            <End Role="tblsalon" EntitySet="tblsalon" />
+            <End Role="tblappointment" EntitySet="tblappointment" />
+          </AssociationSet>
+          <AssociationSet Name="tblSalon_tblShopOwner" Association="Self.tblSalon_tblShopOwner">
+            <End Role="tblshop_owner" EntitySet="tblshop_owner" />
+            <End Role="tblsalon" EntitySet="tblsalon" />
+          </AssociationSet>
+          <AssociationSet Name="tblService_tblShop" Association="Self.tblService_tblShop">
+            <End Role="tblsalon" EntitySet="tblsalon" />
+            <End Role="tblservice" EntitySet="tblservice" />
+          </AssociationSet>
+          <AssociationSet Name="tblServiceBooked_tblAppointment" Association="Self.tblServiceBooked_tblAppointment">
+            <End Role="tblappointment" EntitySet="tblappointment" />
+            <End Role="tblservice_booked" EntitySet="tblservice_booked" />
+          </AssociationSet>
+          <AssociationSet Name="tblServiceBooked_tblService" Association="Self.tblServiceBooked_tblService">
+            <End Role="tblservice" EntitySet="tblservice" />
+            <End Role="tblservice_booked" EntitySet="tblservice_booked" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SalonDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="SalonDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblbarbers" EntityType="SalonDbModel.tblbarber" />
+          <EntitySet Name="tblcurrent_appointments" EntityType="SalonDbModel.tblcurrent_appointments" />
+          <EntitySet Name="tbllogs" EntityType="SalonDbModel.tbllog" />
+          <AssociationSet Name="tblCurrentAppointments_tblBarber" Association="SalonDbModel.tblCurrentAppointments_tblBarber">
+            <End Role="tblbarber" EntitySet="tblbarbers" />
+            <End Role="tblcurrent_appointments" EntitySet="tblcurrent_appointments" />
+          </AssociationSet>
+          <EntitySet Name="tblcustomers" EntityType="SalonDbModel.tblcustomer" />
+          <EntitySet Name="tblservices" EntityType="SalonDbModel.tblservice" />
+          <EntitySet Name="tblsalons" EntityType="SalonDbModel.tblsalon" />
+          <AssociationSet Name="tblBarber_tblSalon" Association="SalonDbModel.tblBarber_tblSalon">
+            <End Role="tblsalon" EntitySet="tblsalons" />
+            <End Role="tblbarber" EntitySet="tblbarbers" />
+          </AssociationSet>
+          <AssociationSet Name="tblCurrentAppointments_tblSalon" Association="SalonDbModel.tblCurrentAppointments_tblSalon">
+            <End Role="tblsalon" EntitySet="tblsalons" />
+            <End Role="tblcurrent_appointments" EntitySet="tblcurrent_appointments" />
+          </AssociationSet>
+          <AssociationSet Name="tblCustomer_tblSalon" Association="SalonDbModel.tblCustomer_tblSalon">
+            <End Role="tblsalon" EntitySet="tblsalons" />
+            <End Role="tblcustomer" EntitySet="tblcustomers" />
+          </AssociationSet>
+          <AssociationSet Name="tblService_tblShop" Association="SalonDbModel.tblService_tblShop">
+            <End Role="tblsalon" EntitySet="tblsalons" />
+            <End Role="tblservice" EntitySet="tblservices" />
+          </AssociationSet>
+          <EntitySet Name="tblservice_booked" EntityType="SalonDbModel.tblservice_booked" />
+          <AssociationSet Name="tblServiceBooked_tblService" Association="SalonDbModel.tblServiceBooked_tblService">
+            <End Role="tblservice" EntitySet="tblservices" />
+            <End Role="tblservice_booked" EntitySet="tblservice_booked" />
+          </AssociationSet>
+          <EntitySet Name="tblbarber_service" EntityType="SalonDbModel.tblbarber_service" />
+          <AssociationSet Name="tblBaberRole_tblBarber" Association="SalonDbModel.tblBaberRole_tblBarber">
+            <End Role="tblbarber" EntitySet="tblbarbers" />
+            <End Role="tblbarber_service" EntitySet="tblbarber_service" />
+          </AssociationSet>
+          <AssociationSet Name="tblBaberRole_tblService" Association="SalonDbModel.tblBaberRole_tblService">
+            <End Role="tblservice" EntitySet="tblservices" />
+            <End Role="tblbarber_service" EntitySet="tblbarber_service" />
+          </AssociationSet>
+          <EntitySet Name="tblappointments" EntityType="SalonDbModel.tblappointment" />
+          <AssociationSet Name="tblCurrentAppointments_tblAppointment" Association="SalonDbModel.tblCurrentAppointments_tblAppointment">
+            <End Role="tblappointment" EntitySet="tblappointments" />
+            <End Role="tblcurrent_appointments" EntitySet="tblcurrent_appointments" />
+          </AssociationSet>
+          <AssociationSet Name="tblJob_tblBarber" Association="SalonDbModel.tblJob_tblBarber">
+            <End Role="tblbarber" EntitySet="tblbarbers" />
+            <End Role="tblappointment" EntitySet="tblappointments" />
+          </AssociationSet>
+          <AssociationSet Name="tblJob_tblCustomer" Association="SalonDbModel.tblJob_tblCustomer">
+            <End Role="tblcustomer" EntitySet="tblcustomers" />
+            <End Role="tblappointment" EntitySet="tblappointments" />
+          </AssociationSet>
+          <AssociationSet Name="tblJob_tblSalon" Association="SalonDbModel.tblJob_tblSalon">
+            <End Role="tblsalon" EntitySet="tblsalons" />
+            <End Role="tblappointment" EntitySet="tblappointments" />
+          </AssociationSet>
+          <AssociationSet Name="tblServiceBooked_tblAppointment" Association="SalonDbModel.tblServiceBooked_tblAppointment">
+            <End Role="tblappointment" EntitySet="tblappointments" />
+            <End Role="tblservice_booked" EntitySet="tblservice_booked" />
+          </AssociationSet>
+          <EntitySet Name="tblinvoices" EntityType="SalonDbModel.tblinvoice" />
+          <AssociationSet Name="tblInvoice_tblAppointment" Association="SalonDbModel.tblInvoice_tblAppointment">
+            <End Role="tblappointment" EntitySet="tblappointments" />
+            <End Role="tblinvoice" EntitySet="tblinvoices" />
+          </AssociationSet>
+          <AssociationSet Name="tblInvoice_tblSalon" Association="SalonDbModel.tblInvoice_tblSalon">
+            <End Role="tblsalon" EntitySet="tblsalons" />
+            <End Role="tblinvoice" EntitySet="tblinvoices" />
+          </AssociationSet>
+          <EntitySet Name="tblshop_owner" EntityType="SalonDbModel.tblshop_owner" />
+          <AssociationSet Name="tblSalon_tblShopOwner" Association="SalonDbModel.tblSalon_tblShopOwner">
+            <End Role="tblshop_owner" EntitySet="tblshop_owner" />
+            <End Role="tblsalon" EntitySet="tblsalons" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="tblbarber">
+          <Key>
+            <PropertyRef Name="barber_id" />
+          </Key>
+          <Property Name="barber_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="barber_name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="salon_id" Type="Int32" Nullable="false" />
+          <Property Name="allocated_seat_no" Type="Int32" Nullable="false" />
+          <Property Name="is_available" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="tblcurrent_appointments" Relationship="SalonDbModel.tblCurrentAppointments_tblBarber" FromRole="tblbarber" ToRole="tblcurrent_appointments" />
+          <NavigationProperty Name="tblsalon" Relationship="SalonDbModel.tblBarber_tblSalon" FromRole="tblbarber" ToRole="tblsalon" />
+          <NavigationProperty Name="tblbarber_service" Relationship="SalonDbModel.tblBaberRole_tblBarber" FromRole="tblbarber" ToRole="tblbarber_service" />
+          <NavigationProperty Name="tblappointments" Relationship="SalonDbModel.tblJob_tblBarber" FromRole="tblbarber" ToRole="tblappointment" />
+        </EntityType>
+        <EntityType Name="tblcurrent_appointments">
+          <Key>
+            <PropertyRef Name="current_appointment_id" />
+          </Key>
+          <Property Name="current_appointment_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="appointment_id" Type="Int32" Nullable="false" />
+          <Property Name="salon_id" Type="Int32" Nullable="false" />
+          <Property Name="barber_id" Type="Int32" Nullable="false" />
+          <Property Name="current_date" Type="DateTime" Nullable="false" />
+          <Property Name="last_appointment_no" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblbarber" Relationship="SalonDbModel.tblCurrentAppointments_tblBarber" FromRole="tblcurrent_appointments" ToRole="tblbarber" />
+          <NavigationProperty Name="tblsalon" Relationship="SalonDbModel.tblCurrentAppointments_tblSalon" FromRole="tblcurrent_appointments" ToRole="tblsalon" />
+          <NavigationProperty Name="tblappointment" Relationship="SalonDbModel.tblCurrentAppointments_tblAppointment" FromRole="tblcurrent_appointments" ToRole="tblappointment" />
+        </EntityType>
+        <EntityType Name="tbllog">
+          <Key>
+            <PropertyRef Name="log_id" />
+          </Key>
+          <Property Name="log_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ref_table" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ref_id" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="updated_date_time" Type="DateTime" Nullable="false" />
+          <Property Name="action_type" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="tblCurrentAppointments_tblBarber">
+          <End Type="SalonDbModel.tblbarber" Role="tblbarber" Multiplicity="1" />
+          <End Type="SalonDbModel.tblcurrent_appointments" Role="tblcurrent_appointments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblbarber">
+              <PropertyRef Name="barber_id" />
+            </Principal>
+            <Dependent Role="tblcurrent_appointments">
+              <PropertyRef Name="barber_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblcustomer">
+          <Key>
+            <PropertyRef Name="customer_id" />
+          </Key>
+          <Property Name="customer_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="mobile_no" Type="Int32" Nullable="false" />
+          <Property Name="salon_id" Type="Int32" Nullable="false" />
+          <Property Name="login_time" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="tblsalon" Relationship="SalonDbModel.tblCustomer_tblSalon" FromRole="tblcustomer" ToRole="tblsalon" />
+          <NavigationProperty Name="tblappointments" Relationship="SalonDbModel.tblJob_tblCustomer" FromRole="tblcustomer" ToRole="tblappointment" />
+        </EntityType>
+        <EntityType Name="tblservice">
+          <Key>
+            <PropertyRef Name="service_id" />
+          </Key>
+          <Property Name="service_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="service_name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="salon_id" Type="Int32" Nullable="false" />
+          <Property Name="price" Type="Decimal" Nullable="false" />
+          <Property Name="duration" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblsalon" Relationship="SalonDbModel.tblService_tblShop" FromRole="tblservice" ToRole="tblsalon" />
+          <NavigationProperty Name="tblservice_booked" Relationship="SalonDbModel.tblServiceBooked_tblService" FromRole="tblservice" ToRole="tblservice_booked" />
+          <NavigationProperty Name="tblbarber_service" Relationship="SalonDbModel.tblBaberRole_tblService" FromRole="tblservice" ToRole="tblbarber_service" />
+        </EntityType>
+        <EntityType Name="tblsalon">
+          <Key>
+            <PropertyRef Name="salon_id" />
+          </Key>
+          <Property Name="salon_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="owner_id" Type="Int32" Nullable="false" />
+          <Property Name="salon_name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="salon_location" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="contact_no" Type="Int32" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="seating_capacity" Type="Int32" Nullable="false" />
+          <Property Name="opening_time" Type="Time" Nullable="false" />
+          <Property Name="closing_time" Type="Time" Nullable="false" />
+          <NavigationProperty Name="tblbarbers" Relationship="SalonDbModel.tblBarber_tblSalon" FromRole="tblsalon" ToRole="tblbarber" />
+          <NavigationProperty Name="tblcurrent_appointments" Relationship="SalonDbModel.tblCurrentAppointments_tblSalon" FromRole="tblsalon" ToRole="tblcurrent_appointments" />
+          <NavigationProperty Name="tblcustomers" Relationship="SalonDbModel.tblCustomer_tblSalon" FromRole="tblsalon" ToRole="tblcustomer" />
+          <NavigationProperty Name="tblservices" Relationship="SalonDbModel.tblService_tblShop" FromRole="tblsalon" ToRole="tblservice" />
+          <NavigationProperty Name="tblappointments" Relationship="SalonDbModel.tblJob_tblSalon" FromRole="tblsalon" ToRole="tblappointment" />
+          <NavigationProperty Name="tblinvoices" Relationship="SalonDbModel.tblInvoice_tblSalon" FromRole="tblsalon" ToRole="tblinvoice" />
+          <NavigationProperty Name="tblshop_owner" Relationship="SalonDbModel.tblSalon_tblShopOwner" FromRole="tblsalon" ToRole="tblshop_owner" />
+        </EntityType>
+        <Association Name="tblBarber_tblSalon">
+          <End Type="SalonDbModel.tblsalon" Role="tblsalon" Multiplicity="1" />
+          <End Type="SalonDbModel.tblbarber" Role="tblbarber" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblsalon">
+              <PropertyRef Name="salon_id" />
+            </Principal>
+            <Dependent Role="tblbarber">
+              <PropertyRef Name="salon_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblCurrentAppointments_tblSalon">
+          <End Type="SalonDbModel.tblsalon" Role="tblsalon" Multiplicity="1" />
+          <End Type="SalonDbModel.tblcurrent_appointments" Role="tblcurrent_appointments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblsalon">
+              <PropertyRef Name="salon_id" />
+            </Principal>
+            <Dependent Role="tblcurrent_appointments">
+              <PropertyRef Name="salon_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblCustomer_tblSalon">
+          <End Type="SalonDbModel.tblsalon" Role="tblsalon" Multiplicity="1" />
+          <End Type="SalonDbModel.tblcustomer" Role="tblcustomer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblsalon">
+              <PropertyRef Name="salon_id" />
+            </Principal>
+            <Dependent Role="tblcustomer">
+              <PropertyRef Name="salon_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblService_tblShop">
+          <End Type="SalonDbModel.tblsalon" Role="tblsalon" Multiplicity="1" />
+          <End Type="SalonDbModel.tblservice" Role="tblservice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblsalon">
+              <PropertyRef Name="salon_id" />
+            </Principal>
+            <Dependent Role="tblservice">
+              <PropertyRef Name="salon_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblservice_booked">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="appointment_id" Type="Int32" Nullable="false" />
+          <Property Name="service_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblservice" Relationship="SalonDbModel.tblServiceBooked_tblService" FromRole="tblservice_booked" ToRole="tblservice" />
+          <NavigationProperty Name="tblappointment" Relationship="SalonDbModel.tblServiceBooked_tblAppointment" FromRole="tblservice_booked" ToRole="tblappointment" />
+        </EntityType>
+        <Association Name="tblServiceBooked_tblService">
+          <End Type="SalonDbModel.tblservice" Role="tblservice" Multiplicity="1" />
+          <End Type="SalonDbModel.tblservice_booked" Role="tblservice_booked" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblservice">
+              <PropertyRef Name="service_id" />
+            </Principal>
+            <Dependent Role="tblservice_booked">
+              <PropertyRef Name="service_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblbarber_service">
+          <Key>
+            <PropertyRef Name="barber_service_id" />
+          </Key>
+          <Property Name="barber_service_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="barber_id" Type="Int32" Nullable="false" />
+          <Property Name="service_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblbarber" Relationship="SalonDbModel.tblBaberRole_tblBarber" FromRole="tblbarber_service" ToRole="tblbarber" />
+          <NavigationProperty Name="tblservice" Relationship="SalonDbModel.tblBaberRole_tblService" FromRole="tblbarber_service" ToRole="tblservice" />
+        </EntityType>
+        <Association Name="tblBaberRole_tblBarber">
+          <End Type="SalonDbModel.tblbarber" Role="tblbarber" Multiplicity="1" />
+          <End Type="SalonDbModel.tblbarber_service" Role="tblbarber_service" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblbarber">
+              <PropertyRef Name="barber_id" />
+            </Principal>
+            <Dependent Role="tblbarber_service">
+              <PropertyRef Name="barber_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblBaberRole_tblService">
+          <End Type="SalonDbModel.tblservice" Role="tblservice" Multiplicity="1" />
+          <End Type="SalonDbModel.tblbarber_service" Role="tblbarber_service" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblservice">
+              <PropertyRef Name="service_id" />
+            </Principal>
+            <Dependent Role="tblbarber_service">
+              <PropertyRef Name="service_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblappointment">
+          <Key>
+            <PropertyRef Name="appointment_id" />
+          </Key>
+          <Property Name="appointment_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="appointment_no_for_day" Type="Int32" Nullable="false" />
+          <Property Name="salon_id" Type="Int32" Nullable="false" />
+          <Property Name="due_date" Type="DateTime" Nullable="false" />
+          <Property Name="start_time" Type="Time" Nullable="false" />
+          <Property Name="expected_end_time" Type="Time" Nullable="false" />
+          <Property Name="end_time" Type="Time" />
+          <Property Name="barber_Id" Type="Int32" Nullable="false" />
+          <Property Name="customer_id" Type="Int32" Nullable="false" />
+          <Property Name="canceled" Type="Boolean" Nullable="false" />
+          <Property Name="status" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblcurrent_appointments" Relationship="SalonDbModel.tblCurrentAppointments_tblAppointment" FromRole="tblappointment" ToRole="tblcurrent_appointments" />
+          <NavigationProperty Name="tblbarber" Relationship="SalonDbModel.tblJob_tblBarber" FromRole="tblappointment" ToRole="tblbarber" />
+          <NavigationProperty Name="tblcustomer" Relationship="SalonDbModel.tblJob_tblCustomer" FromRole="tblappointment" ToRole="tblcustomer" />
+          <NavigationProperty Name="tblsalon" Relationship="SalonDbModel.tblJob_tblSalon" FromRole="tblappointment" ToRole="tblsalon" />
+          <NavigationProperty Name="tblservice_booked" Relationship="SalonDbModel.tblServiceBooked_tblAppointment" FromRole="tblappointment" ToRole="tblservice_booked" />
+          <NavigationProperty Name="tblinvoices" Relationship="SalonDbModel.tblInvoice_tblAppointment" FromRole="tblappointment" ToRole="tblinvoice" />
+        </EntityType>
+        <Association Name="tblCurrentAppointments_tblAppointment">
+          <End Type="SalonDbModel.tblappointment" Role="tblappointment" Multiplicity="1" />
+          <End Type="SalonDbModel.tblcurrent_appointments" Role="tblcurrent_appointments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblappointment">
+              <PropertyRef Name="appointment_id" />
+            </Principal>
+            <Dependent Role="tblcurrent_appointments">
+              <PropertyRef Name="appointment_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblJob_tblBarber">
+          <End Type="SalonDbModel.tblbarber" Role="tblbarber" Multiplicity="1" />
+          <End Type="SalonDbModel.tblappointment" Role="tblappointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblbarber">
+              <PropertyRef Name="barber_id" />
+            </Principal>
+            <Dependent Role="tblappointment">
+              <PropertyRef Name="barber_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblJob_tblCustomer">
+          <End Type="SalonDbModel.tblcustomer" Role="tblcustomer" Multiplicity="1" />
+          <End Type="SalonDbModel.tblappointment" Role="tblappointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblcustomer">
+              <PropertyRef Name="customer_id" />
+            </Principal>
+            <Dependent Role="tblappointment">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblJob_tblSalon">
+          <End Type="SalonDbModel.tblsalon" Role="tblsalon" Multiplicity="1" />
+          <End Type="SalonDbModel.tblappointment" Role="tblappointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblsalon">
+              <PropertyRef Name="salon_id" />
+            </Principal>
+            <Dependent Role="tblappointment">
+              <PropertyRef Name="salon_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblServiceBooked_tblAppointment">
+          <End Type="SalonDbModel.tblappointment" Role="tblappointment" Multiplicity="1" />
+          <End Type="SalonDbModel.tblservice_booked" Role="tblservice_booked" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblappointment">
+              <PropertyRef Name="appointment_id" />
+            </Principal>
+            <Dependent Role="tblservice_booked">
+              <PropertyRef Name="appointment_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblinvoice">
+          <Key>
+            <PropertyRef Name="invoice_id" />
+          </Key>
+          <Property Name="invoice_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="salon_id" Type="Int32" Nullable="false" />
+          <Property Name="appointment_id" Type="Int32" Nullable="false" />
+          <Property Name="total_price" Type="Decimal" Nullable="false" />
+          <Property Name="discount" Type="Decimal" Nullable="false" />
+          <Property Name="final_price" Type="Decimal" Nullable="false" />
+          <NavigationProperty Name="tblappointment" Relationship="SalonDbModel.tblInvoice_tblAppointment" FromRole="tblinvoice" ToRole="tblappointment" />
+          <NavigationProperty Name="tblsalon" Relationship="SalonDbModel.tblInvoice_tblSalon" FromRole="tblinvoice" ToRole="tblsalon" />
+        </EntityType>
+        <Association Name="tblInvoice_tblAppointment">
+          <End Type="SalonDbModel.tblappointment" Role="tblappointment" Multiplicity="1" />
+          <End Type="SalonDbModel.tblinvoice" Role="tblinvoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblappointment">
+              <PropertyRef Name="appointment_id" />
+            </Principal>
+            <Dependent Role="tblinvoice">
+              <PropertyRef Name="appointment_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblInvoice_tblSalon">
+          <End Type="SalonDbModel.tblsalon" Role="tblsalon" Multiplicity="1" />
+          <End Type="SalonDbModel.tblinvoice" Role="tblinvoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblsalon">
+              <PropertyRef Name="salon_id" />
+            </Principal>
+            <Dependent Role="tblinvoice">
+              <PropertyRef Name="salon_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblshop_owner">
+          <Key>
+            <PropertyRef Name="owner_id" />
+          </Key>
+          <Property Name="owner_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="contact_no" Type="Int32" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="pin" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblsalons" Relationship="SalonDbModel.tblSalon_tblShopOwner" FromRole="tblshop_owner" ToRole="tblsalon" />
+        </EntityType>
+        <Association Name="tblSalon_tblShopOwner">
+          <End Type="SalonDbModel.tblshop_owner" Role="tblshop_owner" Multiplicity="1" />
+          <End Type="SalonDbModel.tblsalon" Role="tblsalon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblshop_owner">
+              <PropertyRef Name="owner_id" />
+            </Principal>
+            <Dependent Role="tblsalon">
+              <PropertyRef Name="owner_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SalonDbModelStoreContainer" CdmEntityContainer="SalonDbEntities">
+          <EntitySetMapping Name="tblbarbers">
+            <EntityTypeMapping TypeName="SalonDbModel.tblbarber">
+              <MappingFragment StoreEntitySet="tblbarber">
+                <ScalarProperty Name="is_available" ColumnName="is_available" />
+                <ScalarProperty Name="allocated_seat_no" ColumnName="allocated_seat_no" />
+                <ScalarProperty Name="salon_id" ColumnName="salon_id" />
+                <ScalarProperty Name="barber_name" ColumnName="barber_name" />
+                <ScalarProperty Name="barber_id" ColumnName="barber_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblcurrent_appointments">
+            <EntityTypeMapping TypeName="SalonDbModel.tblcurrent_appointments">
+              <MappingFragment StoreEntitySet="tblcurrent_appointments">
+                <ScalarProperty Name="last_appointment_no" ColumnName="last_appointment_no" />
+                <ScalarProperty Name="current_date" ColumnName="current_date" />
+                <ScalarProperty Name="barber_id" ColumnName="barber_id" />
+                <ScalarProperty Name="salon_id" ColumnName="salon_id" />
+                <ScalarProperty Name="appointment_id" ColumnName="appointment_id" />
+                <ScalarProperty Name="current_appointment_id" ColumnName="current_appointment_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbllogs">
+            <EntityTypeMapping TypeName="SalonDbModel.tbllog">
+              <MappingFragment StoreEntitySet="tbllog">
+                <ScalarProperty Name="action_type" ColumnName="action_type" />
+                <ScalarProperty Name="updated_date_time" ColumnName="updated_date_time" />
+                <ScalarProperty Name="ref_id" ColumnName="ref_id" />
+                <ScalarProperty Name="ref_table" ColumnName="ref_table" />
+                <ScalarProperty Name="log_id" ColumnName="log_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblcustomers">
+            <EntityTypeMapping TypeName="SalonDbModel.tblcustomer">
+              <MappingFragment StoreEntitySet="tblcustomer">
+                <ScalarProperty Name="login_time" ColumnName="login_time" />
+                <ScalarProperty Name="salon_id" ColumnName="salon_id" />
+                <ScalarProperty Name="mobile_no" ColumnName="mobile_no" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblservices">
+            <EntityTypeMapping TypeName="SalonDbModel.tblservice">
+              <MappingFragment StoreEntitySet="tblservice">
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="salon_id" ColumnName="salon_id" />
+                <ScalarProperty Name="service_name" ColumnName="service_name" />
+                <ScalarProperty Name="service_id" ColumnName="service_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblsalons">
+            <EntityTypeMapping TypeName="SalonDbModel.tblsalon">
+              <MappingFragment StoreEntitySet="tblsalon">
+                <ScalarProperty Name="closing_time" ColumnName="closing_time" />
+                <ScalarProperty Name="opening_time" ColumnName="opening_time" />
+                <ScalarProperty Name="seating_capacity" ColumnName="seating_capacity" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="contact_no" ColumnName="contact_no" />
+                <ScalarProperty Name="salon_location" ColumnName="salon_location" />
+                <ScalarProperty Name="salon_name" ColumnName="salon_name" />
+                <ScalarProperty Name="owner_id" ColumnName="owner_id" />
+                <ScalarProperty Name="salon_id" ColumnName="salon_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblservice_booked">
+            <EntityTypeMapping TypeName="SalonDbModel.tblservice_booked">
+              <MappingFragment StoreEntitySet="tblservice_booked">
+                <ScalarProperty Name="service_id" ColumnName="service_id" />
+                <ScalarProperty Name="appointment_id" ColumnName="appointment_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblbarber_service">
+            <EntityTypeMapping TypeName="SalonDbModel.tblbarber_service">
+              <MappingFragment StoreEntitySet="tblbarber_service">
+                <ScalarProperty Name="service_id" ColumnName="service_id" />
+                <ScalarProperty Name="barber_id" ColumnName="barber_id" />
+                <ScalarProperty Name="barber_service_id" ColumnName="barber_service_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblappointments">
+            <EntityTypeMapping TypeName="SalonDbModel.tblappointment">
+              <MappingFragment StoreEntitySet="tblappointment">
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="canceled" ColumnName="canceled" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="barber_Id" ColumnName="barber_Id" />
+                <ScalarProperty Name="end_time" ColumnName="end_time" />
+                <ScalarProperty Name="expected_end_time" ColumnName="expected_end_time" />
+                <ScalarProperty Name="start_time" ColumnName="start_time" />
+                <ScalarProperty Name="due_date" ColumnName="due_date" />
+                <ScalarProperty Name="salon_id" ColumnName="salon_id" />
+                <ScalarProperty Name="appointment_no_for_day" ColumnName="appointment_no_for_day" />
+                <ScalarProperty Name="appointment_id" ColumnName="appointment_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblinvoices">
+            <EntityTypeMapping TypeName="SalonDbModel.tblinvoice">
+              <MappingFragment StoreEntitySet="tblinvoice">
+                <ScalarProperty Name="final_price" ColumnName="final_price" />
+                <ScalarProperty Name="discount" ColumnName="discount" />
+                <ScalarProperty Name="total_price" ColumnName="total_price" />
+                <ScalarProperty Name="appointment_id" ColumnName="appointment_id" />
+                <ScalarProperty Name="salon_id" ColumnName="salon_id" />
+                <ScalarProperty Name="invoice_id" ColumnName="invoice_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblshop_owner">
+            <EntityTypeMapping TypeName="SalonDbModel.tblshop_owner">
+              <MappingFragment StoreEntitySet="tblshop_owner">
+                <ScalarProperty Name="pin" ColumnName="pin" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="contact_no" ColumnName="contact_no" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="owner_id" ColumnName="owner_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
